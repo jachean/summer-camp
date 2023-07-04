@@ -19,6 +19,9 @@ class Player
     #[ORM\Column]
     private ?int $Shirtnumber = null;
 
+    #[ORM\Column]
+    private ?int $age = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Player
     public function setShirtnumber(int $Shirtnumber): static
     {
         $this->Shirtnumber = $Shirtnumber;
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): static
+    {
+        $this->age = $age;
 
         return $this;
     }
