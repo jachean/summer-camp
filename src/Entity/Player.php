@@ -22,6 +22,12 @@ class Player
     #[ORM\Column]
     private ?int $age = null;
 
+    #[ORM\ManyToOne(inversedBy: 'players')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Team $team = null;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,4 +68,18 @@ class Player
 
         return $this;
     }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+
 }
