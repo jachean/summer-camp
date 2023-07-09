@@ -27,6 +27,31 @@
                 <th>Trophies</th>
                 <td>{{ team.trophies }}</td>
             </tr>
+            <tr>
+                <th>Sponsors</th>>
+                {% for sponsor in team.sponsors %}
+                    <td>{{ sponsor }}</td>>
+                {% else %}
+                    <td>no sponsors</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th>Players</th>
+                {% for player in team.players %}
+                    {% if player.role!="coach" %}
+                        <td>{{player.name}}({{ player.role }})</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            <tr>
+                <th>Coach</th>
+                {% for player in team.players %}
+                    {% if player.role=="coach" %}
+                        <td>{{player.name}}</td>
+                    {% endif %}
+                {% endfor %}
+
+            </tr>
         </tbody>
     </table>
 

@@ -16,7 +16,7 @@ class Player
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $Shirtnumber = null;
 
     #[ORM\Column]
@@ -25,6 +25,9 @@ class Player
     #[ORM\ManyToOne(inversedBy: 'players')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Team $team = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $role = null;
 
 
 
@@ -77,6 +80,18 @@ class Player
     public function setTeam(?Team $team): static
     {
         $this->team = $team;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
 
         return $this;
     }

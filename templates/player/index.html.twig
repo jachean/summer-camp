@@ -12,6 +12,7 @@
                 <th>Name</th>
                 <th>Shirtnumber</th>
                 <th>Age</th>
+                <th>role</th>>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 <td>{{ player.name }}</td>
                 <td>{{ player.Shirtnumber }}</td>
                 <td>{{ player.age }}</td>
+                <td>{{ player.role }}</td>
                 <td>
                     <a href="{{ path('app_player_show', {'id': player.id}) }}">show</a>
                     <a href="{{ path('app_player_edit', {'id': player.id}) }}">edit</a>

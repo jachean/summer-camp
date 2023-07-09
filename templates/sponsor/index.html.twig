@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Investment</th>
+
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ sponsor.id }}</td>
                 <td>{{ sponsor.name }}</td>
                 <td>{{ sponsor.investment }}</td>
+
                 <td>
                     <a href="{{ path('app_sponsor_show', {'id': sponsor.id}) }}">show</a>
                     <a href="{{ path('app_sponsor_edit', {'id': sponsor.id}) }}">edit</a>

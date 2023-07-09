@@ -9,8 +9,10 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Team1</th>
                 <th>Score1</th>
                 <th>Score2</th>
+                <th>Team2</th>
                 <th>DateTime</th>
                 <th>Referee</th>
                 <th>actions</th>
@@ -20,8 +22,10 @@
         {% for match in matches %}
             <tr>
                 <td>{{ match.id }}</td>
+                <td>{{  match.team1}}</td>
                 <td>{{ match.score1 }}</td>
                 <td>{{ match.score2 }}</td>
+                <td>{{ match.team2 }}</td>
                 <td>{{ match.dateTime ? match.dateTime|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ match.referee }}</td>
                 <td>

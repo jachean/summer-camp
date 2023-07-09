@@ -16,6 +16,7 @@ class PlayerType extends AbstractType
             ->add('Shirtnumber')
             ->add('age')
             ->add('team')
+            ->add('role')
         ;
     }
 

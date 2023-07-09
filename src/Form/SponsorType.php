@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Sponsor;
+use App\Entity\Team;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,7 +16,13 @@ class SponsorType extends AbstractType
         $builder
             ->add('name')
             ->add('investment')
-            ->add('team')
+            ->add('team',EntityType::class,array(
+
+                'class'=>Team::class,
+                'expanded'=>true,
+                'multiple'=>true,
+
+            ))
         ;
     }
 

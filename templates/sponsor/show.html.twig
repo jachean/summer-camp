@@ -19,6 +19,15 @@
                 <th>Investment</th>
                 <td>{{ sponsor.investment }}</td>
             </tr>
+            <tr>
+                <th>Teams</th>
+                {% for team in sponsor.team %}
+                <td>{{ team  }}</td>>
+                {% else %}
+                    <td>no teams</td>
+                {% endfor %}
+
+            </tr>
         </tbody>
     </table>
 
