@@ -40,6 +40,15 @@ class Team
     #[ORM\ManyToMany(targetEntity: Sponsor::class, mappedBy: 'team')]
     private Collection $sponsors;
 
+    #[ORM\Column]
+    private ?int $Points = null;
+
+    #[ORM\Column]
+    private ?int $goalsscored = null;
+
+    #[ORM\Column]
+    private ?int $goalstaken = null;
+
     public function __construct()
     {
         $this->players = new ArrayCollection();
@@ -219,5 +228,41 @@ class Team
     }
     public function __toString(){
         return $this->getName();
+    }
+
+    public function getPoints(): ?int
+    {
+        return $this->Points;
+    }
+
+    public function setPoints(int $Points): static
+    {
+        $this->Points = $Points;
+
+        return $this;
+    }
+
+    public function getGoalsscored(): ?int
+    {
+        return $this->goalsscored;
+    }
+
+    public function setGoalsscored(int $goalsscored): static
+    {
+        $this->goalsscored = $goalsscored;
+
+        return $this;
+    }
+
+    public function getGoalstaken(): ?int
+    {
+        return $this->goalstaken;
+    }
+
+    public function setGoalstaken(int $goalstaken): static
+    {
+        $this->goalstaken = $goalstaken;
+
+        return $this;
     }
 }

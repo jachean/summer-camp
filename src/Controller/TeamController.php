@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Matches;
 use App\Entity\Team;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +15,63 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/team')]
 class TeamController extends AbstractController
 {
+
+
+    #[Route('/points', name: 'app_team_pointssum', methods: ['GET'])]
+    public function pointssum(EntityManagerInterface $entityManager) {
+        $matches = $entityManager->getRepository(Matches::class)->findAll();
+        foreach($matches as $key){
+            $firstteam=$key->getTeam1();
+            $secondteam=$key->getTeam2();
+            $team1points =$firstteam->getPoints();
+            $team2points =$secondteam->getPoints();
+            $team1gs=$firstteam->getGoalsscored();
+            $team2gs=$secondteam->getGoalsscored();
+            $team1gt=$firstteam->getGoalstaken();
+            $team2gt=$secondteam->getGoalstaken();
+            $team1gs+=$key->getScore1();
+            $team1gt+=$key->getScore2();
+            $team2gs+=$key->getScore2();
+            $team2gt+=$key->getScore1();
+            if($key->getScore1()>$key->getScore2()){
+
+
+                 $team1points+=3;
+            }
+            elseif ($key->getScore1()==$key->getScore2()){
+
+
+                $team1points+=1;
+                $team2points+=1;
+
+            }else {
+
+
+                $team2points += 3;
+            }
+            $firstteam->setPoints( $team1points);
+            $secondteam->setPoints($team2points);
+            $firstteam->setGoalsscored($team1gs);
+            $firstteam->setGoalstaken($team1gt);
+            $secondteam->setGoalsscored($team2gs);
+            $secondteam->setGoalstaken($team2gt);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/resetstats', name: 'app_team_resetstats', methods: ['GET'])]
+    public function resetstats(EntityManagerInterface $entityManager) {
+        $teams = $entityManager->getRepository(Team::class)->findAll();
+        foreach($teams as $key){
+                $key->setGoalsscored(0);
+                $key->setPoints(0);
+                $key->setGoalstaken(0);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/', name: 'app_team_index', methods: ['GET'])]
     public function index(TeamRepository $teamRepository): Response
     {
@@ -76,4 +135,6 @@ class TeamController extends AbstractController
 
         return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
