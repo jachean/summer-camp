@@ -17,8 +17,8 @@ class TeamController extends AbstractController
 {
 
 
-    #[Route('/points', name: 'app_team_pointssum', methods: ['GET'])]
-    public function pointssum(EntityManagerInterface $entityManager) {
+    #[Route('/stats', name: 'app_team_stats', methods: ['GET'])]
+    public function stats(EntityManagerInterface $entityManager) {
         $matches = $entityManager->getRepository(Matches::class)->findAll();
         foreach($matches as $key){
             $firstteam=$key->getTeam1();

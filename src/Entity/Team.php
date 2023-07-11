@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team
@@ -14,6 +15,7 @@ class Team
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -40,14 +42,18 @@ class Team
     #[ORM\ManyToMany(targetEntity: Sponsor::class, mappedBy: 'team')]
     private Collection $sponsors;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
+
     private ?int $Points = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?int $goalsscored = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?int $goalstaken = null;
+
+
+
 
     public function __construct()
     {
@@ -265,4 +271,8 @@ class Team
 
         return $this;
     }
+
+
+
+
 }
