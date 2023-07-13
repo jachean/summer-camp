@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Standings{% endblock %}
+
+{% block body %}
+    <h1>Create new Standings</h1>
+
+    {{ include('standings/_form.html.twig') }}
+
+    <a href="{{ path('app_standings_index') }}">back to list</a>
+{% endblock %}

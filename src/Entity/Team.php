@@ -42,15 +42,28 @@ class Team
     #[ORM\ManyToMany(targetEntity: Sponsor::class, mappedBy: 'team')]
     private Collection $sponsors;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
 
-    private ?int $Points = null;
+    private ?int $Points = 0;
 
-    #[ORM\Column(nullable:true)]
-    private ?int $goalsscored = null;
+    #[ORM\Column]
+    private ?int $goalsscored = 0;
 
-    #[ORM\Column(nullable:true)]
-    private ?int $goalstaken = null;
+    #[ORM\Column]
+    private ?int $goalstaken = 0;
+
+    #[ORM\ManyToOne(inversedBy: 'standings')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Standings $standings = null;
+
+    #[ORM\Column]
+    private ?int $wins = 0;
+
+    #[ORM\Column]
+    private ?int $loses = 0;
+
+    #[ORM\Column]
+    private ?int $ties = 0;
 
 
 
@@ -272,7 +285,57 @@ class Team
         return $this;
     }
 
+    /**
+     * @return Standings|null
+     */
+    public function getStandings(): ?Standings
+    {
+        return $this->standings;
+    }
 
+    /**
+     * @param Standings|null $standings
+     */
+    public function setStandings(?Standings $standings): void
+    {
+        $this->standings = $standings;
+    }
+
+    public function getWins(): ?int
+    {
+        return $this->wins;
+    }
+
+    public function setWins(int $wins): static
+    {
+        $this->wins = $wins;
+
+        return $this;
+    }
+
+    public function getLoses(): ?int
+    {
+        return $this->loses;
+    }
+
+    public function setLoses(int $loses): static
+    {
+        $this->loses = $loses;
+
+        return $this;
+    }
+
+    public function getTies(): ?int
+    {
+        return $this->ties;
+    }
+
+    public function setTies(int $ties): static
+    {
+        $this->ties = $ties;
+
+        return $this;
+    }
 
 
 }

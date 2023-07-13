@@ -29,24 +29,34 @@ class TeamController extends AbstractController
             $team2gs=$secondteam->getGoalsscored();
             $team1gt=$firstteam->getGoalstaken();
             $team2gt=$secondteam->getGoalstaken();
+            $team1wins=$firstteam->getWins();
+            $team2wins=$secondteam->getWins();
+            $team1lose=$firstteam->getLoses();
+            $team2lose=$secondteam->getLoses();
+            $team1ties=$firstteam->getTies();
+            $team2ties=$secondteam->getTies();
             $team1gs+=$key->getScore1();
             $team1gt+=$key->getScore2();
             $team2gs+=$key->getScore2();
             $team2gt+=$key->getScore1();
+
             if($key->getScore1()>$key->getScore2()){
 
-
+                    $team1wins+=1;
+                    $team2lose+=1;
                  $team1points+=3;
             }
             elseif ($key->getScore1()==$key->getScore2()){
 
-
+                $team1ties+=1;
+                $team2ties+=1;
                 $team1points+=1;
                 $team2points+=1;
 
             }else {
 
-
+                $team1lose+=1;
+                $team2wins+=1;
                 $team2points += 3;
             }
             $firstteam->setPoints( $team1points);
@@ -55,6 +65,12 @@ class TeamController extends AbstractController
             $firstteam->setGoalstaken($team1gt);
             $secondteam->setGoalsscored($team2gs);
             $secondteam->setGoalstaken($team2gt);
+            $firstteam->setWins($team1wins);
+            $firstteam->setLoses($team1lose);
+            $firstteam->setTies($team1ties);
+            $secondteam->setWins($team2wins);
+            $secondteam->setLoses($team2lose);
+            $secondteam->setTies($team2ties);
             $entityManager->flush();
         }
         return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
@@ -66,6 +82,10 @@ class TeamController extends AbstractController
                 $key->setGoalsscored(0);
                 $key->setPoints(0);
                 $key->setGoalstaken(0);
+                $key->setWins(0);
+                $key->setLoses(0);
+                $key->setTies(0);
+
             $entityManager->flush();
         }
 

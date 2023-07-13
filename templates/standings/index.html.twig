@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Matches{% endblock %}
+{% block title %}Standings index{% endblock %}
 
 {% block body %}
-    <h1>Matches</h1>
+    <h1>Standings index</h1>
 <body id="body-pd">
 <header class="header" id="header">
     <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
@@ -14,10 +14,10 @@
         <div> <i class="fa-sharp fa-solid fa-futbol fa-lg"></i> <span class="nav_logo-name">ScoreForYou</span>
             <div class="nav_list">
                 <a href="http://127.0.0.1:8000/team" class="nav_link "> <i class="fa-solid fa-people-group fa-lg"></i> <span class="nav_name">Teams</span> </a>
-                <a href="http://127.0.0.1:8000/matches" class="nav_link active">  <i class="fa-solid fa-stopwatch-20 fa-lg"></i> <span class="nav_name">Matches</span> </a>
+                <a href="http://127.0.0.1:8000/matches" class="nav_link ">  <i class="fa-solid fa-stopwatch-20 fa-lg"></i> <span class="nav_name">Matches</span> </a>
                 <a href="http://127.0.0.1:8000/player" class="nav_link "> <i class="fa-solid fa-person-running fa-lg"></i> <span class="nav_name">Players</span> </a>
                 <a href="http://127.0.0.1:8000/sponsor" class="nav_link "> <i class="fa-solid fa-file-invoice-dollar fa-lg"></i> <span class="nav_name">Sponsors</span> </a>
-                <a href="http://127.0.0.1:8000/standings" class="nav_link"> <i class="fa-solid fa-ranking-star fa-lg"></i> <span class="nav_name">Standings</span> </a>
+                <a href="http://127.0.0.1:8000/standings" class="nav_link active"> <i class="fa-solid fa-ranking-star fa-lg"></i> <span class="nav_name">Standings</span> </a>
                 <!---<a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> </div>-->
             </div>
         </div>
@@ -26,36 +26,32 @@
 <!--Container Main start-->
 <div class="height-100 bg-light">
     <h4>
-        <table class="table table-sm">
-            <tbody class="table-group-divider">
+    <table class="table">
+        <thead>
             <tr>
                 <th>Id</th>
-                <td>{{ match.id }}</td>
+                <th>Name</th>
+                <th>actions</th>
             </tr>
+        </thead>
+        <tbody>
+        {% for standing in standings %}
             <tr>
-                <th>Score1</th>
-                <td>{{ match.score1 }}</td>
+                <td>{{ standing.id }}</td>
+                <td>{{ standing.name }}</td>
+
+                <td>
+                    <a href="{{ path('app_standings_show', {'id': standing.id}) }}">show</a>
+                    <a href="{{ path('app_standings_edit', {'id': standing.id}) }}">edit</a>
+                </td>
             </tr>
+        {% else %}
             <tr>
-                <th>Score2</th>
-                <td>{{ match.score2 }}</td>
+                <td colspan="3">no records found</td>
             </tr>
-            <tr>
-                <th>DateTime</th>
-                <td>{{ match.dateTime ? match.dateTime|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Referee</th>
-                <td>{{ match.referee }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </h4></div>
+        {% endfor %}
+        </tbody>
+    </table></h4></div>
 
-
-    <a href="{{ path('app_matches_index') }}">back to list</a>
-
-    <a href="{{ path('app_matches_edit', {'id': match.id}) }}">edit</a>
-
-    {{ include('matches/_delete_form.html.twig') }}
+    <a href="{{ path('app_standings_new') }}">Create new</a>
 {% endblock %}

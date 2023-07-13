@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Standings{% endblock %}
+
+{% block body %}
+    <h1>{{standing.name}}</h1>
+<body id="body-pd">
+<header class="header" id="header">
+    <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+    <
+</header>
+<div class="l-navbar" id="nav-bar">
+    <nav class="nav">
+        <div> <i class="fa-sharp fa-solid fa-futbol fa-lg"></i> <span class="nav_logo-name">ScoreForYou</span>
+            <div class="nav_list">
+                <a href="http://127.0.0.1:8000/team" class="nav_link "> <i class="fa-solid fa-people-group fa-lg"></i> <span class="nav_name">Teams</span> </a>
+                <a href="http://127.0.0.1:8000/matches" class="nav_link ">  <i class="fa-solid fa-stopwatch-20 fa-lg"></i> <span class="nav_name">Matches</span> </a>
+                <a href="http://127.0.0.1:8000/player" class="nav_link "> <i class="fa-solid fa-person-running fa-lg"></i> <span class="nav_name">Players</span> </a>
+                <a href="http://127.0.0.1:8000/sponsor" class="nav_link "> <i class="fa-solid fa-file-invoice-dollar fa-lg"></i> <span class="nav_name">Sponsors</span> </a>
+                <a href="http://127.0.0.1:8000/standings" class="nav_link active"> <i class="fa-solid fa-ranking-star fa-lg"></i> <span class="nav_name">Standings</span> </a>
+                <!---<a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> </div>-->
+            </div>
+        </div>
+    </nav>
+</div>
+<!--Container Main start-->
+<div class="height-100 bg-light">
+    <h4>
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Nickname</th>
+                <th>Points</th>
+                <th>MP</th>
+                <th>W</th>
+                <th>L</th>
+                <th>T</th>
+                <th>GS</th>
+                <th>GT</th>
+                <th>G</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+
+            {% for team in standing.teams %}
+                <tr>
+                    <td>{{ team.id }}</td>
+                    <td>{{ team.name }}</td>
+                    <td>{{ team.Nickname }}</td>
+                    <td>{{ team.points }}</td>>
+                    <td>{{ team.wins+team.loses+team.ties }}</td>
+                    <td>{{ team.wins }}</td>
+                    <td>{{ team.loses}}</td>
+                    <td>{{ team.ties }}</td>
+                    <td>{{ team.goalsscored }}</td>>
+                    <td>{{ team.goalstaken }}</td>
+                    {%if team.goalsscored-team.goalstaken>0 %}
+                        <td>+{{ team.goalsscored -team.goalstaken }}</td>
+                        {% elseif team.goalsscored-team.goalstaken<0%}
+                            <td>{{ team.goalsscored -team.goalstaken }}</td>
+                            {% else %}
+                                <td>0</td>
+                    {% endif %}
+                    <td>
+                        <a href="{{ path('app_team_show', {'id': team.id}) }}">show</a>
+                        <a href="{{ path('app_team_edit', {'id': team.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </h4></div>
+    <a href="{{ path('app_standings_index') }}">back to list</a>
+
+    <a href="{{ path('app_standings_edit', {'id': standing.id}) }}">edit</a>
+
+    {{ include('standings/_delete_form.html.twig') }}
+{% endblock %}

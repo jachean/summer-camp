@@ -2,30 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Sponsor;
+use App\Entity\Standings;
 use App\Entity\Team;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TeamType extends AbstractType
+class StandingsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
-            ->add('CreationDate')
-            ->add('Nickname')
-            ->add('trophies')
-            ->add('standings')
-            ;
+
+
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Team::class,
+            'data_class' => Standings::class,
         ]);
     }
 }
