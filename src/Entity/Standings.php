@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\StandingsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StandingsRepository::class)]
@@ -15,13 +16,17 @@ class Standings
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable:true)]
     private ?string $name = null;
     #[ORM\OneToMany(mappedBy: 'standings', targetEntity: Team::class, orphanRemoval: true)]
     private Collection $teams;
+
+    #[ORM\OneToMany(mappedBy: 'standings', targetEntity: Matches::class, orphanRemoval: true)]
+    private Collection $matches;
     public function __construct()
     {
         $this->teams = new ArrayCollection();
+        $this->matches = new ArrayCollection();
     }
 
 
@@ -73,4 +78,36 @@ class Standings
     public function __toString(){
         return $this->getName();
     }
+
+    /**
+     * @return Collection<int, Matches>
+     */
+    public function getMatches(): Collection
+    {
+        return $this->matches;
+    }
+
+    public function addMatch(Matches $match): static
+    {
+        if (!$this->matches->contains($match)) {
+            $this->matches->add($match);
+            $match->setStandings($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Matches $match): static
+    {
+        if ($this->matches->removeElement($match)) {
+            // set the owning side to null (unless already changed)
+            if ($match->getStandings() === $this) {
+                $match->setStandings(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

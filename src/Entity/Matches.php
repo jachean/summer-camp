@@ -28,11 +28,15 @@ class Matches
     #[ORM\Column]
     private ?int $score2 = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable: true)]
     private ?\DateTimeInterface $dateTime = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable:true)]
     private ?string $referee = null;
+
+    #[ORM\ManyToOne(inversedBy: 'matches')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Standings $standings = null;
 
     public function getId(): ?int
     {
@@ -110,7 +114,21 @@ class Matches
 
         return $this;
     }
+
     public function __toString(){
         return $this->getName();
     }
+
+    public function getStandings(): ?Standings
+    {
+        return $this->standings;
+    }
+
+    public function setStandings(?Standings $standings): static
+    {
+        $this->standings = $standings;
+
+        return $this;
+    }
+
 }

@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Matches;
+use App\Entity\Team;
 use App\Form\MatchesType;
 use App\Repository\MatchesRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,8 +17,32 @@ use Symfony\Component\Routing\Annotation\Route;
 class MatchesController extends AbstractController
 {
     #[Route('/', name: 'app_matches_index', methods: ['GET'])]
-    public function index(MatchesRepository $matchesRepository): Response
+    public function index(MatchesRepository $matchesRepository,EntityManagerInterface $entityManager): Response
     {
+        $matches=$matchesRepository->findAll();
+        $teams=$entityManager->getRepository(Team::class)->findAll();
+        $existingmatches=$matchesRepository->findAll();
+        $nr=$entityManager->getRepository(Matches::class)->count([]);
+        $existingTeams=[];
+        foreach($existingmatches as $match){
+            $existingTeams[$match->getTeam1()->getId()][$match->getTeam2()->getId()]=true;
+            $existingTeams[$match->getTeam2()->getId()][$match->getTeam1()->getId()]=true;
+
+        }
+        foreach($teams as $team1){
+            foreach($teams as $team2){
+                if($team1->getName()!=$team2->getName()&&!isset($existingTeams[$team1->getId()][$team2->getId()])){
+                    $match= new Matches();
+                    $match->setTeam1($team1);
+                    $match->setTeam2($team2);
+                    $match->setScore1(rand(0,6));
+                    $match->setScore2(rand(0,6));
+                    $entityManager->persist($match);
+                }
+            }
+
+        }
+        $entityManager->flush();
         return $this->render('matches/index.html.twig', [
             'matches' => $matchesRepository->findAll(),
         ]);

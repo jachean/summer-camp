@@ -6,6 +6,7 @@ use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OrderBy;
 
@@ -336,6 +337,35 @@ class Team
 
         return $this;
     }
+    public function GenerateMatches(EntityManager $entityManager){
+        $teams = $entityManager->getRepository(Team::class)->findAll();
 
+        $teamsnumb=count($teams);
 
+        for($i=0;$i<$teamsnumb-1;$i++){
+            for($j=0;$j<$teamsnumb-1;$j++){
+                $ok=0;
+                foreach($this->matches1 as $hatz){
+                    if($hatz->getTeam1()==$teams[$i]&&$hatz->getTeam2()==$teams[$j]){
+                        $ok=1;
+
+                    }
+                }
+                if($ok=0){
+                    $match = new Matches();
+                    //$match->setStandings($this);
+                    $match->setTeam1($teams[$i]);
+                    $match->setTeam2($teams[$j]);
+                    $match->setScore1(rand(0,5));
+                    $match->setScore2(rand(0,5));
+                    $this->matches1->add($match);
+                    dd($this->matches1);
+
+                }
+
+            }
+
+        }
+
+    }
 }
