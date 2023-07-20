@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Matches;
+use App\Entity\Player;
 use App\Entity\Standings;
 use App\Entity\Team;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Faker\Factory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,6 +61,17 @@ class TeamController extends AbstractController
     public function matches(EntityManagerInterface $entityManager,Team $team): Response
     {
         $matches=$entityManager->getRepository(Matches::class)->findAll();
+        usort($matches,function($a,$b){
+
+            if(strtotime($a->getDateTime())==strtotime($b->getDateTime())){
+                return 0;
+
+            }
+
+            return (strtotime($a->getDateTime())>strtotime($b->getDateTime())) ? -1:1;
+
+        });
+
         return $this->render('team/matches.html.twig', [
             'matches' => $matches,
             'team'=>$team,
@@ -102,7 +115,56 @@ class TeamController extends AbstractController
 
         return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
     }
-
+//    public function genplayers(EntityManagerInterface $entityManager){
+//        $teams=$entityManager->getRepository(Team::class)->findAll();
+//        $faker=Factory::create();
+//        foreach($teams as $team){
+//                if(sizeof($team->getPlayers())<11){
+//                    $player=new Player();
+//                    $player->setName($faker->name);
+//                    $player->setAge(rand(16,38));
+//                    $player->setRole("Goalkeeper");
+//                    $player->setShirtnumber(1);
+//                    $player->setTeam($team);
+//                    $entityManager->persist($player);
+//                    for($x=0;$x<4;$x++){
+//                        $player=new Player();
+//                        $player->setName($faker->name);
+//                        $player->setAge(rand(16,38));
+//                        $player->setRole("Defender");
+//                        $player->setShirtnumber(rand(12,20));
+//                        $player->setTeam($team);
+//                        $entityManager->persist($player);
+//                    }
+//                    for($x=0;$x<4;$x++){
+//                        $player=new Player();
+//                        $player->setName($faker->name);
+//                        $player->setAge(rand(16,38));
+//                        $player->setRole("Midfielder");
+//                        $player->setShirtnumber(rand(21,30));
+//                        $player->setTeam($team);
+//                        $entityManager->persist($player);
+//                    }
+//                    for($x=0;$x<2;$x++){
+//                        $player=new Player();
+//                        $player->setName($faker->name);
+//                        $player->setAge(rand(16,38));
+//                        $player->setRole("Striker");
+//                        $player->setShirtnumber(rand(2,11));
+//                        $player->setTeam($team);
+//                        $entityManager->persist($player);
+//                    }
+//                    $player=new Player();
+//                    $player->setName($faker->name);
+//                    $player->setAge(rand(43,68));
+//                    $player->setRole("coach");
+//                    $player->setTeam($team);
+//                    $entityManager->persist($player);
+//                }
+//            $entityManager->flush();
+//        }
+//
+//    }
 
 
 }

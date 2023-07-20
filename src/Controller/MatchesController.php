@@ -8,6 +8,8 @@ use App\Form\MatchesType;
 use App\Repository\MatchesRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Faker\Factory;
+use Faker\Provider\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +18,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/matches')]
 class MatchesController extends AbstractController
 {
+
     #[Route('/', name: 'app_matches_index', methods: ['GET'])]
     public function index(MatchesRepository $matchesRepository,EntityManagerInterface $entityManager): Response
     {
+        $referees=["Popescu Cezar","Copoi Andreianu","Marcel Popescu","Copoi Andreianu","Ovidiu Hategan","Istvan Kovacs","Sebastian Coltescu","Radu Petrescu"];
         $matches=$matchesRepository->findAll();
+        $faker=Factory::create();
+       // $provider = new DateTime($faker);
         $teams=$entityManager->getRepository(Team::class)->findAll();
         $existingmatches=$matchesRepository->findAll();
         $nr=$entityManager->getRepository(Matches::class)->count([]);
@@ -37,14 +43,30 @@ class MatchesController extends AbstractController
                     $match->setTeam2($team2);
                     $match->setScore1(rand(0,6));
                     $match->setScore2(rand(0,6));
+                    $match->setDateTime($faker->dateTimeThisYear()->format('Y-m-d H:00:00'));
+                    $match->setReferee($referees[rand(0,7)]);
+
                     $entityManager->persist($match);
                 }
             }
 
         }
+        usort($matches,function($a,$b){
+
+            if(strtotime($a->getDateTime())==strtotime($b->getDateTime())){
+                return 0;
+
+            }
+
+            return (strtotime($a->getDateTime())>strtotime($b->getDateTime())) ? -1:1;
+
+        });
+
+
+
         $entityManager->flush();
         return $this->render('matches/index.html.twig', [
-            'matches' => $matchesRepository->findAll(),
+            'matches' => $matches,
         ]);
     }
 
@@ -102,4 +124,5 @@ class MatchesController extends AbstractController
 
         return $this->redirectToRoute('app_matches_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

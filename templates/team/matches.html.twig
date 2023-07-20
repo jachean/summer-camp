@@ -24,12 +24,12 @@
     </nav>
 </div>
 <!--Container Main start-->
-<div class="height-100 bg-light">
+<div class="bg-light">
     <h4>
         <table class="table table-sm">
             <thead>
             <tr>
-                <th>Id</th>
+
                 <th>Team1</th>
                 <th>Score1</th>
                 <th>Score2</th>
@@ -43,7 +43,7 @@
             {% for match in matches %}
                 {% if match.team1==team.name or match.team2==team.name %}
                 <tr>
-                    <td>{{ match.id }}</td>
+
                     <td>{{  match.team1}}</td>
                     <td>{{ match.score1 }}</td>
                     <td>{{ match.score2 }}</td>
@@ -51,8 +51,8 @@
                     <td>{{ match.dateTime ? match.dateTime|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ match.referee }}</td>
                     <td>
-                        <a href="{{ path('app_matches_show', {'id': match.id}) }}">show</a>
-                        <a href="{{ path('app_matches_edit', {'id': match.id}) }}">edit</a>
+                        <a href="{{ path('app_matches_show', {'id': match.id}) }}"><button type="button" class="btn btn-outline-success">Show</button></a>
+                        <a href="{{ path('app_matches_edit', {'id': match.id}) }}"><button type="button" class="btn btn-outline-success">Edit</button></a>
                     </td>
                 </tr>
                 {% endif %}
@@ -66,7 +66,7 @@
     </h4></div>
 
 
-<a href="{{ path('app_team_index') }}">back to list</a>
+<a href="{{ path('app_team_index') }}"><button type="button" class="btn btn-success">Back to List</button></a>
 
 
 

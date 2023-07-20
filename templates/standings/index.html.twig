@@ -29,7 +29,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+
                 <th>Name</th>
                 <th>actions</th>
             </tr>
@@ -37,12 +37,12 @@
         <tbody>
         {% for standing in standings %}
             <tr>
-                <td>{{ standing.id }}</td>
+
                 <td>{{ standing.name }}</td>
 
                 <td>
-                    <a href="{{ path('app_standings_show', {'id': standing.id}) }}">show</a>
-                    <a href="{{ path('app_standings_edit', {'id': standing.id}) }}">edit</a>
+                    <a href="{{ path('app_standings_show', {'id': standing.id}) }}"><button type="button" class="btn btn-outline-success">Show</button></a>
+                    <a href="{{ path('app_standings_edit', {'id': standing.id}) }}"><button type="button" class="btn btn-outline-success">Edit</button></a>
                 </td>
             </tr>
         {% else %}

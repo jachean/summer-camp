@@ -24,12 +24,12 @@
     </nav>
 </div>
 <!--Container Main start-->
-<div class="height-100 bg-light">
+<div class="bg-light">
     <h4>
         <table class="table table-sm">
             <thead>
             <tr>
-                <th>Id</th>
+
                 <th>Name</th>
                 <th>Shirtnumber</th>
                 <th>Age</th>
@@ -40,14 +40,14 @@
             <tbody class="table-group-divider">
             {% for player in players %}
                 <tr>
-                    <td>{{ player.id }}</td>
+
                     <td>{{ player.name }}</td>
                     <td>{{ player.Shirtnumber }}</td>
                     <td>{{ player.age }}</td>
                     <td>{{ player.role }}</td>
                     <td>
-                        <a href="{{ path('app_player_show', {'id': player.id}) }}">show</a>
-                        <a href="{{ path('app_player_edit', {'id': player.id}) }}">edit</a>
+                        <a href="{{ path('app_player_show', {'id': player.id}) }}"><button type="button" class="btn btn-outline-success">Show</button></a>
+                        <a href="{{ path('app_player_edit', {'id': player.id}) }}"><button type="button" class="btn btn-outline-success">Edit</button></a>
                     </td>
                 </tr>
             {% else %}
@@ -65,5 +65,5 @@
         }
 
     </style>
-    <a href="{{ path('app_player_new') }}">Create new</a>
+    <a href="{{ path('app_player_new') }}"><button type="button" class="btn btn-success">Create New</button></a>
 {% endblock %}

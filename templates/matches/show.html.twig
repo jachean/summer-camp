@@ -24,14 +24,11 @@
     </nav>
 </div>
 <!--Container Main start-->
-<div class="height-100 bg-light">
+<div class="bg-light">
     <h4>
         <table class="table table-sm">
             <tbody class="table-group-divider">
-            <tr>
-                <th>Id</th>
-                <td>{{ match.id }}</td>
-            </tr>
+
             <tr>
                 <th>Score1</th>
                 <td>{{ match.score1 }}</td>
@@ -53,9 +50,9 @@
     </h4></div>
 
 
-    <a href="{{ path('app_matches_index') }}">back to list</a>
+    <a href="{{ path('app_matches_index') }}"><button type="button" class="btn btn-success">Back to List</button></a>
 
-    <a href="{{ path('app_matches_edit', {'id': match.id}) }}">edit</a>
+    <a href="{{ path('app_matches_edit', {'id': match.id}) }}"><button type="button" class="btn btn-success">Edit</button></a>
 
     {{ include('matches/_delete_form.html.twig') }}
 {% endblock %}

@@ -28,10 +28,7 @@
     <h4>
         <table class="table table-sm">
             <tbody class="table-group-divider">
-            <tr>
-                <th>Id</th>
-                <td>{{ team.id }}</td>
-            </tr>
+
             <tr>
                 <th>Name</th>
                 <td>{{ team.name }}</td>
@@ -59,14 +56,6 @@
                     <td>{{ sponsor }}</td>>
                 {% else %}
                     <td>no sponsors</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <th>Players</th>
-                {% for player in team.players %}
-                    {% if player.role!="coach" %}
-                        <td>{{player.name}}({{ player.role }})</td>
-                    {% endif %}
                 {% endfor %}
             </tr>
             <tr>

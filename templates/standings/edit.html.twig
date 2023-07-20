@@ -7,7 +7,7 @@
 
     {{ include('standings/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_standings_index') }}">back to list</a>
+    <a href="{{ path('app_standings_index') }}"><button type="button" class="btn btn-success">Back to List</button></a>
 
     {{ include('standings/_delete_form.html.twig') }}
 {% endblock %}

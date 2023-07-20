@@ -28,8 +28,8 @@ class Matches
     #[ORM\Column]
     private ?int $score2 = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable: true)]
-    private ?\DateTimeInterface $dateTime = null;
+    #[ORM\Column(length: 255,nullable: true)]
+    private ?string $dateTime = null;
 
     #[ORM\Column(length: 255,nullable:true)]
     private ?string $referee = null;
@@ -91,12 +91,13 @@ class Matches
         return $this;
     }
 
-    public function getDateTime(): ?\DateTimeInterface
+    public function getDateTime(): ?string
     {
+
         return $this->dateTime;
     }
 
-    public function setDateTime(\DateTimeInterface $dateTime): static
+    public function setDateTime(string $dateTime): static
     {
         $this->dateTime = $dateTime;
 
@@ -130,5 +131,6 @@ class Matches
 
         return $this;
     }
+
 
 }
