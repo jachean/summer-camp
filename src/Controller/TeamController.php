@@ -7,6 +7,7 @@ use App\Entity\Player;
 use App\Entity\Standings;
 use App\Entity\Team;
 use App\Form\TeamType;
+use App\Repository\MatchesRepository;
 use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
@@ -78,8 +79,26 @@ class TeamController extends AbstractController
         ]);
     }
     #[Route('/{id}/players', name: 'app_team_players', methods: ['GET'])]
-    public function players(EntityManagerInterface $entityManager,Team $team): Response
+    public function players(EntityManagerInterface $entityManager,Team $team,TeamRepository $teamRepository): Response
     {
+        $this->genplayers($teamRepository ,$entityManager);
+        $teams=$teamRepository->findAll();
+        foreach($teams as $team){
+
+            foreach($team->getPlayers()as $previousplayer){
+                foreach($team->getPlayers()as$player){
+                    if($player!=$previousplayer&&$player->getShirtnumber()==$previousplayer->getShirtnumber()){
+                        $player->setShirtnumber($previousplayer->getShirtnumber()+1);
+                        $entityManager->persist($player);
+                    }
+
+                }
+
+
+            }
+            //dd($team->getPlayers());
+            $entityManager->flush();
+        }
        // $players=$entityManager->getRepository(Player::class)->findAll();
         return $this->render('team/players.html.twig', [
             //'players' => $players,
@@ -107,8 +126,16 @@ class TeamController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_team_delete', methods: ['POST'])]
-    public function delete(Request $request, Team $team, TeamRepository $teamRepository): Response
+    public function delete(Request $request, Team $team, TeamRepository $teamRepository,EntityManagerInterface $entityManager,MatchesRepository $matchesRepository): Response
     {
+        $matches=$entityManager->getRepository(Matches::class)->findAll();
+        foreach($matches as $match){
+                if($match->getTeam1()->getName()==$team->getName()){
+
+                    $matchesRepository->remove($match,true);
+                }
+
+    }
         if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
             $teamRepository->remove($team, true);
         }
@@ -166,5 +193,54 @@ class TeamController extends AbstractController
 //
 //    }
 
+    public function genplayers(TeamRepository $teamRepository,EntityManagerInterface $entityManager){
+        $teams=$teamRepository->findAll();
+        $faker=Factory::create();
+        foreach($teams as $team){
+            if(sizeof($team->getPlayers())<11){
+                $player=new Player();
+                $player->setName($faker->name);
+                $player->setAge(rand(16,38));
+                $player->setRole("Goalkeeper");
+                $player->setShirtnumber(1);
+                $player->setTeam($team);
+                $entityManager->persist($player);
+                for($x=0;$x<4;$x++){
+                    $player=new Player();
+                    $player->setName($faker->name);
+                    $player->setAge(rand(16,38));
+                    $player->setRole("Defender");
+                    $player->setShirtnumber(rand(12,20));
+                    $player->setTeam($team);
+                    $entityManager->persist($player);
+                }
+                for($x=0;$x<4;$x++){
+                    $player=new Player();
+                    $player->setName($faker->name);
+                    $player->setAge(rand(16,38));
+                    $player->setRole("Midfielder");
+                    $player->setShirtnumber(rand(21,30));
+                    $player->setTeam($team);
+                    $entityManager->persist($player);
+                }
+                for($x=0;$x<2;$x++){
+                    $player=new Player();
+                    $player->setName($faker->name);
+                    $player->setAge(rand(16,38));
+                    $player->setRole("Striker");
+                    $player->setShirtnumber(rand(2,11));
+                    $player->setTeam($team);
+                    $entityManager->persist($player);
+                }
+                $player=new Player();
+                $player->setName($faker->name);
+                $player->setAge(rand(43,68));
+                $player->setRole("coach");
+                $player->setTeam($team);
+                $entityManager->persist($player);
+            }
+            $entityManager->flush();
+        }
 
+    }
 }

@@ -13,6 +13,7 @@
     <nav class="nav">
         <div> <i class="fa-sharp fa-solid fa-futbol fa-lg"></i> <span class="nav_logo-name">ScoreForYou</span>
             <div class="nav_list">
+                <a href="http://127.0.0.1:8000/home/page" class="nav_link"><i class="fa-solid fa-house"></i> <span class="nav_name">Home</span> </a>
                 <a href="http://127.0.0.1:8000/team" class="nav_link active"> <i class="fa-solid fa-people-group fa-lg"></i> <span class="nav_name">Teams</span> </a>
                 <a href="http://127.0.0.1:8000/matches" class="nav_link">  <i class="fa-solid fa-stopwatch-20 fa-lg"></i> <span class="nav_name">Matches</span> </a>
                 <a href="http://127.0.0.1:8000/player" class="nav_link"> <i class="fa-solid fa-person-running fa-lg"></i> <span class="nav_name">Players</span> </a>
@@ -46,10 +47,10 @@
                     <td>{{ team.Nickname }}</td>
                     <td>{{ team.trophies }}</td>
                     <td>
-                        <a href="{{ path('app_team_show', {'id': team.id}) }}"><button type="button" class="btn btn-outline-success">Show</button></a>
                         <a href="{{ path('app_team_edit', {'id': team.id}) }}"><button type="button" class="btn btn-outline-success">Edit</button></a>
                         <a href="{{ path('app_team_matches', {'id': team.id}) }}"><button type="button" class="btn btn-outline-success">Matches</button></a>
                         <a href="{{ path('app_team_players', {'id': team.id}) }}"><button type="button" class="btn btn-outline-success">Players</button></a>
+                        <a href="{{ path('app_team_show', {'id': team.id}) }}"><button type="button" class="btn btn-outline-success">Others</button></a>
                     </td>
                 </tr>
             {% else %}
